@@ -21,7 +21,8 @@ Using this setup if you want to find the user's real ip, you'll have to do somet
 $ip = request()->header('X-Real-IP');
 if (! $ip) {
     $ip = request()->ip();
-}```
+}
+```
 
 **Services that expose a port MUST expose a URL that returns a 200 status**  
 
