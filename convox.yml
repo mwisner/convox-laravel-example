@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      path: ./backend
+      path: .
       manifest: compose/prod/php-fpm/Dockerfile
     port: 80
     health: /ping
@@ -12,7 +12,7 @@ services:
 
   scheduler:
     build:
-      path: ./backend
+      path: .
       manifest: compose/prod/php-fpm/Dockerfile
     command: /scheduler.sh
     environment:
@@ -20,19 +20,9 @@ services:
 
   worker:
     build:
-      path: ./backend
+      path: .
       manifest: compose/prod/php-fpm/Dockerfile
     command: /worker.sh
-    environment:
-      - "*"
-
-  frontend:
-    build:
-      path: ./frontend
-      manifest: compose/prod/frontend/Dockerfile
-    port: 3000
-    health: /
-    internal: true
     environment:
       - "*"
 
@@ -46,13 +36,3 @@ services:
     links:
       - app
       - frontend
-
-  redirect:
-    build:
-      path: ./backend
-      manifest: compose/prod/redirect/Dockerfile
-    port: 80
-    domain: "*.delivermyride.com"
-    health: /vw-status
-    environment:
-      - HOST
