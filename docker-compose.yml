@@ -1,0 +1,61 @@
+version: '3'
+
+volumes:
+  local_mysql_data: {}
+  local_mysql_data_backups: {}
+  local_es_data: {}
+
+services:
+
+  ###
+  # DBs, Caches, ETC Services
+  ###
+  mysql:
+    build: ./compose/local/mysql
+    volumes:
+      - local_mysql_data:/var/lib/mysql
+      - local_mysql_data_backups:/backups
+    ports:
+    - 3306:3306
+    environment:
+      - MYSQL_DATABASE=example
+      - MYSQL_USER=example
+      - MYSQL_PASSWORD=example
+      - MYSQL_ROOT_PASSWORD=example
+
+  redis:
+    image: redis:latest
+
+  ###
+  # Dev things
+  ###
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+    - "1025:1025"
+    - "8025:8025"
+
+  ###
+  # Actual Application
+  ###
+  app:
+    build: ./compose/local/php-fpm
+    ports:
+        - "9000:9000"
+    volumes:
+      - .:/app
+    links:
+        - mysql
+        - redis
+        - mailhog
+
+  nginx:
+    build: ./compose/local/nginx
+    ports:
+        - "5000:80"
+    links:
+        - app
+        - mysql
+    volumes:
+      - .:/app
+      - ./logs/nginx/:/var/log/nginx:cached
