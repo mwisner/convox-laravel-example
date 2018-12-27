@@ -24,4 +24,5 @@ if (! $ip) {
 }```
 
 **Services that expose a port MUST expose a URL that returns a 200 status**  
+
 Any service behind an ALB must have some sort of health check URL. Because PHP-FPM is not a web server there are no urls that are accessible directly for health checks. In order for this to work we actually have to install and run nginx inside the application as well, and set up a special healthcheck url.
