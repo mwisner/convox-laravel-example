@@ -5,7 +5,6 @@ services:
       manifest: compose/prod/php-fpm/Dockerfile
     port: 80
     health: /ping
-    internal: true
     command: /app.sh
     environment:
       - "*"
@@ -25,14 +24,3 @@ services:
     command: /worker.sh
     environment:
       - "*"
-
-  nginx:
-    build:
-      path: ./backend
-      manifest: compose/prod/nginx/Dockerfile
-    port: 80
-    domain: ${HOST}
-    health: /vw-status
-    links:
-      - app
-      - frontend

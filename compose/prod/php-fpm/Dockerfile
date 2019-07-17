@@ -10,7 +10,7 @@ RUN apt-get update \
 		wget \
 		curl \
 		unzip \
-		mysql-client \
+		default-mysql-client \
 		zlib1g-dev \
 		libicu-dev \
 		g++ \
